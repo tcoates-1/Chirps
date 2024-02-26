@@ -1,0 +1,14 @@
+[0;1;32m●[0m mysql.service - MySQL Community Server
+     Loaded: loaded (/lib/systemd/system/mysql.service; enabled; vendor preset: enabled)
+     Active: [0;1;32mactive (running)[0m since Fri 2024-02-23 20:45:34 UTC; 40min ago
+    Process: 27276 ExecStartPre=/usr/share/mysql/mysql-systemd-start pre (code=exited, status=0/SUCCESS)
+   Main PID: 27284 (mysqld)
+     Status: "Server is operational"
+      Tasks: 38 (limit: 1121)
+     Memory: 373.5M
+        CPU: 10.113s
+     CGroup: /system.slice/mysql.service
+             └─27284 /usr/sbin/mysqld
+
+Feb 23 20:45:33 ip-172-31-23-187 systemd[1]: Starting MySQL Community Server...
+Feb 23 20:45:34 ip-172-31-23-187 systemd[1]: Started MySQL Community Server.
