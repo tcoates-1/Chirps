@@ -95,9 +95,9 @@ class ChirpController extends Controller
      * display the chirps from only the past week
      */
 
-     public function recent(Request $request)
+     public function recent()
      {
-         $days = $request->input('days', 14); // Default to 14 days if not provided
+         $days = 14; // Default to 14 days 
          $startDate = Carbon::now()->subDays($days);
          $chirps = Chirp::where('created_at', '>=', $startDate)->get();
      

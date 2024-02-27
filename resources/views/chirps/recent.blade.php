@@ -8,17 +8,11 @@
 				class="block w-full border-gray-300 focus:border-indigo-300 focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm"
 			>{{ old('message') }}</textarea>
 			<x-input-error :messages="$errors->get('message')" class="mt-2" />
-			<x-primary-button class="mt-4">{{ __('Chirp') }}</x-primary-button>
+			<x-primary-button style="background-color: blue; color: white;" class="mt-4">{{ __('Chirp') }}</x-primary-button>
 		</form>
-
-		<form method="GET" action="{{ route('recent') }}">
-        	<label for="days">Enter number of days:</label>
-        	<input type="number" name="days" id="days" min="1" value="14">
-        	<button type="submit">Submit</button>
-    	</form>
-        @if(isset($days))
-            <p>Viewing chirps from the last {{ $days }} days.</p>
-        @endif
+        <div style="display:flex; justify-content:center; align-items:center">
+            <h1 style="font-size: 24px; color: blue; font-weight: bold; text-decoration: underline;">Chirps From The Last 14 Days</h1>
+        </div>
         
 		<div class="mt-6 bg-white shadow-sm rounded-lg divide-y">
            		 @foreach ($chirps as $chirp)
