@@ -7,6 +7,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\View\View;
+use Carbon\Carbon;
 
 class ChirpController extends Controller
 {
@@ -88,5 +89,17 @@ class ChirpController extends Controller
 	$chirp->delete();
 
 	return redirect(route('chirps.index'));
+    }
+
+    /**
+     * display the chirps from only the past week
+     */
+
+     public function chirpsFromPastWeek()
+     {
+        $weekAgo = Carbon::now()->subWeek();
+        $chirps = Chirp::where('created_at', '>=', $weekAgo)->get();
+
+        return view('chirps.index', ['chirps' => $chirps]);
     }
 }

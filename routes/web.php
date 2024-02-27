@@ -33,4 +33,6 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
+Route::get('/chirps/past-week', [ChirpController::class, 'chirpsFromPastWeek'])->name('chirps.pastWeek');
+
 require __DIR__.'/auth.php';
