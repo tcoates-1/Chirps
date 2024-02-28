@@ -31,6 +31,11 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    Route::get('/chirps/recent/{days?}', [ChirpController::class, 'recent'])
+        ->name('recent')
+        ->where('days', '[0-9]+'); // Optional route parameter for number of days
 });
+
+
 
 require __DIR__.'/auth.php';

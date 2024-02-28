@@ -10,11 +10,10 @@
 			<x-input-error :messages="$errors->get('message')" class="mt-2" />
 			<x-primary-button class="mt-4">{{ __('Chirp') }}</x-primary-button>
 		</form>
-		<div class="flex justify-self-center place-content-center">
-			<h1 class="text-blue-500 text-3xl underline">Look What Your Friends Are Chirping</h1>
-		</div>
-	
-
+        <div class="flex justify-self-center place-content-center">
+            <h1 class="text-blue-500 text-3xl underline">Chirps From The Last 14 Days</h1>
+        </div>
+        
 		<div class="mt-6 bg-white shadow-sm rounded-lg divide-y">
            		 @foreach ($chirps as $chirp)
                			 <div class="p-6 flex space-x-2">
