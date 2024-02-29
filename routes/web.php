@@ -34,6 +34,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/chirps/recent/{days?}', [ChirpController::class, 'recent'])
         ->name('recent')
         ->where('days', '[0-9]+'); // Optional route parameter for number of days
+    Route::put('/profile', [ProfileController::class, 'profile_image'])->name('profile.profile_image');
 });
 
 
