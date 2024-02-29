@@ -82,6 +82,9 @@
         <x-responsive-nav-link :href="route('recent')" :active="request()->routeIs('recent')">
 		{{ __('Recent Chirps') }}
 	    </x-responsive-nav-link>
+        <x-responsive-nav-link :href="route('recent')" :active="request()->routeIs('recent')">
+		{{ __('Recent Chirps') }}
+	    </x-responsive-nav-link>
         </div>
 
         <!-- Responsive Settings Options -->
