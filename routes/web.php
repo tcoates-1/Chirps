@@ -31,10 +31,11 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-    Route::get('/chirps/recent/{days?}', [ChirpController::class, 'recent'])
-        ->name('recent')
-        ->where('days', '[0-9]+'); // Optional route parameter for number of days
+    Route::get('/chirps/recent', [ChirpController::class, 'recent'])->name('recent');
+    Route::put('/profile', [ProfileController::class, 'profile_image'])->name('profile.profile_image');
 });
+
+
 
 
 

@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\View\View;
+use Illuminate\Support\Facades\Storage;
 
 class ProfileController extends Controller
 {
@@ -56,5 +57,21 @@ class ProfileController extends Controller
         $request->session()->regenerateToken();
 
         return Redirect::to('/');
+    }
+
+    /**
+     * Add or Update User's profile pic
+     */
+    public function profile_image(Request $request)
+    {
+        $request->validate([
+            'profile_image' => 'url|active_url', // Adjust max length as needed
+        ]);
+    
+        auth()->user()->update([
+            'profile_image' => $request->input('profile_image'),
+        ]);
+    
+        return redirect()->back()->with('success', 'Profile picture URL updated successfully!');
     }
 }

@@ -8,6 +8,8 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\View\View;
 use Illuminate\Support\Carbon;
+use Illuminate\Routing\Controller;
+use Illuminate\Support\Facades\Validator;
 
 class ChirpController extends Controller
 {
@@ -92,16 +94,21 @@ class ChirpController extends Controller
     }
 
     /**
-     * display the chirps from only the past week
+     * display the chirps from a given amount of days into the past
+     * Default to 14 days
      */
 
-     public function recent()
+    public function recent(Request $request)
      {
-         $days = 14; // Default to 14 days 
-         $startDate = Carbon::now()->subDays($days);
-         $chirps = Chirp::where('created_at', '>=', $startDate)->get();
+        $request->validate([
+            'days' => 'nullable|numeric|min:1'
+        ]); 
+        
+        $days = $request->input('days', 14); // Default to 14 days 
+        $startDate = Carbon::now()->subDays($days);
+        $chirps = Chirp::where('created_at', '>=', $startDate)->get();
      
-         return view('chirps.recent', ['chirps' => $chirps, 'days' => $days]);
+        return view('chirps.recent', ['chirps' => $chirps, 'days' => $days]);
      }
     }
 
