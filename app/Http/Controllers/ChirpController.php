@@ -97,7 +97,7 @@ class ChirpController extends Controller
      * display the chirps from only the past week
      */
 
-    public function recent(Request $request, $days = 14)
+    public function recent(Request $request)
      {
         $request->validate([
             'days' => 'nullable|numeric|min:1'
