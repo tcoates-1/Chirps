@@ -94,7 +94,8 @@ class ChirpController extends Controller
     }
 
     /**
-     * display the chirps from only the past week
+     * display the chirps from a given amount of days into the past
+     * Default to 14 days
      */
 
     public function recent(Request $request)
