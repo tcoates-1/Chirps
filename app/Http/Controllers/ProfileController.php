@@ -30,6 +30,14 @@ class ProfileController extends Controller
     {
         $request->user()->fill($request->validated());
 
+        $request->validate([
+            'profile_image' => 'url|active_url',
+        ]);
+    
+        auth()->user()->update([
+            'profile_image' => $request->input('profile_image'),
+        ]);
+
         if ($request->user()->isDirty('email')) {
             $request->user()->email_verified_at = null;
         }

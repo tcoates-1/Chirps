@@ -21,7 +21,7 @@
                     <x-nav-link :href="route('recent')" :active="request()->routeIs('recent')">
 			            {{ __('Recent Chirps') }}
 		            </x-nav-link>
-                    <x-nav-link :href="route('chirps.all-chirpers')" :active="request()->routeIs('chirps.all-chirpers')">
+                    <x-nav-link :href="route('chirpers.index')" :active="request()->routeIs('chirpers.index')">
 			            {{ __('Chirpers') }}
 		            </x-nav-link>
                </div>
