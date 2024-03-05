@@ -32,7 +32,6 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
     Route::get('/chirps/recent', [ChirpController::class, 'recent'])->name('recent');
-    Route::put('/profile', [ProfileController::class, 'profile_image'])->name('profile.profile_image');
     Route::get('/chirpers',[ProfileController::class, 'index'])->name('chirpers.index');
 });
 
