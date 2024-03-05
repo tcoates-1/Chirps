@@ -1,9 +1,12 @@
 
 <section>
-    <header>
-        <h2 class="text-lg font-medium text-gray-900">
-            {{ __('Add Profile Picture') }}
-        </h2>
+    <header class="flex items-center">
+        <!-- Display current profile picture if it exists -->
+        @if(auth()->user()->profile_image)
+            <img src="{{ auth()->user()->profile_image }}" alt="Current Profile Picture" class="h-16 w-16 object-contain rounded-full mr-4">
+        @endif 
+        <h2 class="text-lg font-medium text-gray-900 ml-4"> {{ __('Add Profile Picture') }}</h2>
+
     </header>
     
     <form method="POST" action="{{ route('profile.profile_image') }}">
@@ -16,8 +19,5 @@
         <x-primary-button class="mt-4">{{ __('Save') }}</x-primary-button>
     </form>
     
-    <!-- Display current profile picture if it exists -->
-    @if(auth()->user()->profile_image)
-        <img src="{{ auth()->user()->profile_image }}" alt="Current Profile Picture" class="mt-2">
-    @endif
+    
 </section>
