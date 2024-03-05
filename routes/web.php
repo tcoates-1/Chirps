@@ -33,6 +33,7 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
     Route::get('/chirps/recent', [ChirpController::class, 'recent'])->name('recent');
     Route::put('/profile', [ProfileController::class, 'profile_image'])->name('profile.profile_image');
+    Route::get('/chirps/all_chirpers',[ProfileController::class, 'all_chirpers'])->name('all_chirpers');
 });
 
 

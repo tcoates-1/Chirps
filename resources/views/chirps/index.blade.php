@@ -18,7 +18,7 @@
 		<div class="mt-6 bg-white shadow-sm rounded-lg divide-y">
            		 @foreach ($chirps as $chirp)
                			 <div class="p-6 flex space-x-2">
-								<img src="{{ $chirp->user->profile_image }}"  alt="Current Profile Picture" class="h-16 w-16 object-contain rounded-full"/>
+								<img src="{{ $chirp->user->profile_image }}"  alt="Current Profile Picture" class="h-16 w-16 object-cover rounded-full"/>
                     			<div class="flex-1">
                         			<div class="flex justify-between items-center">
                             				<div>
