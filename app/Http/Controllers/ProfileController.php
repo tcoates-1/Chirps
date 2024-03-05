@@ -79,7 +79,7 @@ class ProfileController extends Controller
     public function index()
     {
         $users = User::withCount('chirps')->get();
-        return view('chirps.all-chirpers', compact('users'));
+        return view('profile.index', compact('users'));
     }
 }
 
