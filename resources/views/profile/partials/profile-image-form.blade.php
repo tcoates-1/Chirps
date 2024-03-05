@@ -3,7 +3,7 @@
     <header class="flex items-center">
         <!-- Display current profile picture if it exists -->
         @if(auth()->user()->profile_image)
-            <img src="{{ auth()->user()->profile_image }}" alt="Current Profile Picture" class="h-16 w-16 object-contain rounded-full mr-4">
+            <img src="{{ auth()->user()->profile_image }}" alt="Current Profile Picture" class="h-16 w-16 object-cover rounded-full mr-4">
         @endif 
         <h2 class="text-lg font-medium text-gray-900 ml-4"> {{ __('Add Profile Picture') }}</h2>
 

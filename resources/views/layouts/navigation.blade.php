@@ -6,7 +6,7 @@
                 <!-- Logo -->
                 <div class="shrink-0 flex items-center">
                     <a href="{{ route('dashboard') }}">
-                        <x-application-logo class="block h-9 w-auto fill-current text-gray-800" />
+                        <x-application-logo class="block h-9 w-auto fill-current text-blue-600" />
                     </a>
                 </div>
 
@@ -21,8 +21,8 @@
                     <x-nav-link :href="route('recent')" :active="request()->routeIs('recent')">
 			            {{ __('Recent Chirps') }}
 		            </x-nav-link>
-                    <x-nav-link :href="route('all_chirpers')" :active="request()->routeIs('all_chirpers')">
-			            {{ __('All Chirpers') }}
+                    <x-nav-link :href="route('chirps.all-chirpers')" :active="request()->routeIs('chirps.all-chirpers')">
+			            {{ __('Chirpers') }}
 		            </x-nav-link>
                </div>
             </div>

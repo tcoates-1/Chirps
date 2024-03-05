@@ -27,7 +27,9 @@
                 <tbody>
                     @foreach ($users as $user)
                         <tr>
-                            <td class="text-center"><img src="{{ $user->profile_image }}" alt="{{ $user->name }}" class="h-16 w-16 object-cover rounded-full mx-auto"></td>
+                            <td class="text-center">
+                                <img src="{{ $user->profile_image }}" alt="{{ $user->name }}" class="h-16 w-16 object-cover rounded-full mx-auto" onerror="this.onerror=null; this.src='{{ asset('images/Lake.jpg') }}'; this.alt='image default';">
+                            </td>
                             <td class="text-center">{{ $user->name }}</td>
                             <td class="text-center">{{ $user->created_at->format('M d, Y') }}</td>
                             <td class="text-center">{{ $user->chirps_count }}</td>

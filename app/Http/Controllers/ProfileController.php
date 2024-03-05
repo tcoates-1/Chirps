@@ -76,7 +76,7 @@ class ProfileController extends Controller
         return redirect()->back()->with('success', 'Profile picture URL updated successfully!');
     }
 
-    public function all_chirpers()
+    public function index()
     {
         $users = User::withCount('chirps')->get();
         return view('chirps.all-chirpers', compact('users'));
