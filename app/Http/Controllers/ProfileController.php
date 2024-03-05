@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\View\View;
 use Illuminate\Support\Facades\Storage;
+use App\Models\User;
 
 class ProfileController extends Controller
 {
@@ -74,4 +75,12 @@ class ProfileController extends Controller
     
         return redirect()->back()->with('success', 'Profile picture URL updated successfully!');
     }
+
+    public function index()
+    {
+        $users = User::withCount('chirps')->get();
+        return view('profile.index', compact('users'));
+    }
 }
+
+
