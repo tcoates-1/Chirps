@@ -17,12 +17,16 @@
 		<div class="mt-6 bg-white shadow-sm rounded-lg divide-y">
            		 @foreach ($chirps as $chirp)
                			<div class="p-6 flex space-x-2">
-							<img src="{{ $chirp->user->profile_image }}" alt="Current Profile Picture" class="h-16 w-16 object-cover rounded-full mx-auto" onerror="this.onerror=null; this.src='{{ asset('images/Lake.jpg') }}'; this.alt='image default';">     
-                    			<div class="flex-1">
+							<a href="{{ route('profile.show', ['username' => $chirp->user->username]) }}">
+								<img src="{{ $chirp->user->profile_image }}" alt="Current Profile Picture" class="h-16 w-16 object-cover rounded-full mx-auto transform hover:scale-125" onerror="this.onerror=null; this.src='{{ asset('images/Lake.jpg') }}'; this.alt='image default';">     
+							</a>	
+								<div class="flex-1">
                         			<div class="flex justify-between items-center">
                             				<div>
-                                				<span class="text-gray-800">{{ $chirp->user->name }}</span>
-                                				<small class="ml-2 text-sm text-gray-600">{{ $chirp->created_at->format('j M Y, g:i a') }}</small>
+												<a href="{{ route('profile.show', ['username' => $chirp->user->username]) }}">
+                                					<span class="text-gray-800 hover:text-blue-600 hover:font-bold">{{ $chirp->user->name }}</span>
+												</a>
+												<small class="ml-2 text-sm text-gray-600">{{ $chirp->created_at->format('j M Y, g:i a') }}</small>
 												@unless ($chirp->created_at->eq($chirp->updated_at))
                                     					<small class="text-sm text-gray-600"> &middot; {{ __('edited') }}</small>
                                 				@endunless

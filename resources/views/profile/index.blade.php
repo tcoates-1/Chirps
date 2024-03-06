@@ -1,15 +1,5 @@
 <x-app-layout>
 	<div class="max-w-full mx-auto p-4 sm:p-6 lg:p-8">
-		<form method="POST" action="{{ route('chirps.store') }}">
-			@csrf
-			<textarea
-				name="message"
-				placeholder="{{ __('What\'s on your mind?') }}"
-				class="block w-full border-gray-300 focus:border-indigo-300 focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm"
-			>{{ old('message') }}</textarea>
-			<x-input-error :messages="$errors->get('message')" class="mt-2" />
-			<x-primary-button class="mt-4">{{ __('Chirp') }}</x-primary-button>
-		</form>
         <div class="flex justify-self-center place-content-center">
             <h1 class="text-blue-500 text-3xl underline">All Chirpers!</h1>
         </div>
@@ -28,7 +18,9 @@
                     @foreach ($users as $user)
                         <tr>
                             <td class="text-center">
-                                <img src="{{ $user->profile_image }}" alt="{{ $user->name }}" class="h-16 w-16 object-cover rounded-full mx-auto" onerror="this.onerror=null; this.src='{{ asset('images/Lake.jpg') }}'; this.alt='image default';">
+                                <a href="{{ route('profile.show', ['username' => $user->username]) }}">
+                                    <img src="{{ $user->profile_image }}" alt="{{ $user->name }}" class="h-16 w-16 object-cover rounded-full mx-auto transform hover:scale-125" onerror="this.onerror=null; this.src='{{ asset('images/Lake.jpg') }}'; this.alt='image default';">
+                                </a>
                             </td>
                             <td class="text-center">{{ $user->name }}</td>
                             <td class="text-center">{{ $user->created_at->format('M d, Y') }}</td>

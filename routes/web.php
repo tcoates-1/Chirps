@@ -33,6 +33,7 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
     Route::get('/chirps/recent', [ChirpController::class, 'recent'])->name('recent');
     Route::get('/chirpers',[ProfileController::class, 'index'])->name('chirpers.index');
+    Route::get('/profile/{username}', [ProfileController::class, 'show'])->name('profile.show');
 });
 
 
