@@ -32,10 +32,12 @@ class ProfileController extends Controller
 
         $request->validate([
             'profile_image' => 'url|active_url',
+            'username' => ['required', 'string', 'max:255', 'unique:users,username,'],
         ]);
     
         auth()->user()->update([
             'profile_image' => $request->input('profile_image'),
+            'username' => $request->username,
         ]);
 
         if ($request->user()->isDirty('email')) {
@@ -68,26 +70,25 @@ class ProfileController extends Controller
         return Redirect::to('/');
     }
 
-    /**
-     * Add or Update User's profile pic
-     */
-    public function profile_image(Request $request)
-    {
-        $request->validate([
-            'profile_image' => 'url|active_url', // Adjust max length as needed
-        ]);
-    
-        auth()->user()->update([
-            'profile_image' => $request->input('profile_image'),
-        ]);
-    
-        return redirect()->back()->with('success', 'Profile picture URL updated successfully!');
-    }
-
     public function index()
     {
         $users = User::withCount('chirps')->get();
         return view('profile.index', compact('users'));
+    }
+
+    public function show($username)
+    {
+        // Fetch user data from the database based on the username
+        $user = User::where('username', $username)->first();
+
+        if (!$user) {
+            abort(404); // User not found
+        }
+
+        // Fetch chirps for the user
+        $chirps = $user->chirps;
+
+        return view('profile.profile', compact('user', 'chirps'));
     }
 }
 
