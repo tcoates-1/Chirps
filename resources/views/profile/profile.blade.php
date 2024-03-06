@@ -1,9 +1,9 @@
 <x-app-layout>
     <x-slot name="header">
         <div class="flex items-center">
-            <img src="{{ Auth::user()->profile_image }}" alt="Current Profile Picture" class="h-16 w-16 object-cover rounded-full mx-3" onerror="this.onerror=null; this.src='{{ asset('images/Lake.jpg') }}'; this.alt='image default';">
+            <img src="{{ $user->profile_image }}" alt="Current Profile Picture" class="h-16 w-16 object-cover rounded-full mx-3" onerror="this.onerror=null; this.src='{{ asset('images/Lake.jpg') }}'; this.alt='image default';">
             <h2 class=" align-middle font-semibold text-xl text-blue-600 leading-tight">
-                {{ Auth::user()->username }} Profile
+                {{ $user->username }} Profile
             </h2>
         </div>
     </x-slot>
