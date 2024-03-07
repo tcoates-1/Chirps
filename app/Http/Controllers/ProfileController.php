@@ -79,7 +79,7 @@ class ProfileController extends Controller
     public function show($username)
     {
         // Fetch user data from the database based on the username
-        $user = User::where('username', $username)->first();
+        $user = User::withCount('chirps')->where('username', $username)->first();
 
         if (!$user) {
             abort(404); // User not found
@@ -88,7 +88,7 @@ class ProfileController extends Controller
         // Fetch chirps for the user
         $chirps = $user->chirps;
 
-        return view('profile.profile', compact('user', 'chirps'));
+        return view('profile.profile', compact('user', 'chirps',));
     }
 }
 
