@@ -10,6 +10,7 @@
                     <tr>
                         <th class="text-blue-500">Profile Picture</th>
                         <th class="text-blue-500">Name</th>
+                        <th class="text-blue-500">UserName</th>
                         <th class="text-blue-500">Account Created</th>
                         <th class="text-blue-500">Chirp Count</th>
                     </tr>
@@ -22,7 +23,16 @@
                                     <img src="{{ $user->profile_image }}" alt="{{ $user->name }}" class="h-16 w-16 object-cover rounded-full mx-auto transform hover:scale-125" onerror="this.onerror=null; this.src='{{ asset('images/Lake.jpg') }}'; this.alt='image default';">
                                 </a>
                             </td>
-                            <td class="text-center">{{ $user->name }}</td>
+                            <td class="text-center hover:text-blue-600 hover:font-bold">
+                                <a href="{{ route('profile.show', ['username' => $user->username]) }}">
+                                    {{ $user->name }}
+                                </a>
+                            </td>
+                            <td class="text-center hover:text-blue-600 hover:font-bold">
+                                <a href="{{ route('profile.show', ['username' => $user->username]) }}">
+                                     {{ $user->username }}
+                                </a>
+                            </td>
                             <td class="text-center">{{ $user->created_at->format('M d, Y') }}</td>
                             <td class="text-center">{{ $user->chirps_count }}</td>
                         </tr>
