@@ -4,7 +4,7 @@
         <div class="flex justify-between h-16">
             <div class="flex">
                 <!-- Logo -->
-                <div class="shrink-0 flex items-center">
+                <div class="flex items-center">
                     <a href="{{ route('dashboard') }}">
                         <x-application-logo class="block h-9 w-auto fill-current text-blue-600" />
                     </a>
@@ -88,9 +88,12 @@
         <x-responsive-nav-link :href="route('recent')" :active="request()->routeIs('recent')">
 		{{ __('Recent Chirps') }}
 	    </x-responsive-nav-link>
-        <x-responsive-nav-link :href="route('recent')" :active="request()->routeIs('recent')">
-		{{ __('Recent Chirps') }}
-	    </x-responsive-nav-link>
+        <x-responsive-nav-link :href="route('profile.show', ['username' => Auth::user()->username])" :active="request()->routeIs('profile.show')">
+            {{ __('Profile') }}
+        </x-responsive-nav-link>
+        <x-responsive-nav-link :href="route('chirpers.index')" :active="request()->routeIs('chirpers.index')">
+            {{ __('Chirpers') }}
+        </x-responsive-nav-link>
         </div>
 
         <!-- Responsive Settings Options -->

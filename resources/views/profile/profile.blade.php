@@ -1,13 +1,6 @@
 <x-app-layout>
     <x-slot name="header">
-        <div class="flex items-center justify-between">
-            <img src="{{ $user->profile_image }}" alt="Current Profile Picture" class="h-24 w-24 object-cover rounded-full mx-3" onerror="this.onerror=null; this.src='{{ asset('images/Lake.jpg') }}'; this.alt='image default';">
-            <h1 class=" align-middle text-3xl text-blue-600 leading-tight">
-                {{ $user->username }} Profile
-            </h1>
-            <h1 class="text-center text-blue-600 text-3xl">Total Chirps: {{ $user->chirps_count }}</h1>
-            <h1 class="text-center text-blue-600 text-3xl">Chirperversary: {{ $user->created_at->format('M d, Y') }}</h1>
-        </div>
+        <x-profile.card :user="$user" class="border-blue-500" />
     </x-slot>
     <div class="max-w-full mx-auto p-4 sm:p-6 lg:p-8">
 		<form method="POST" action="{{ route('chirps.store') }}">
