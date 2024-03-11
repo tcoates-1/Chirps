@@ -29,7 +29,7 @@ Route::resource('chirps', ChirpController::class)
 	->middleware(['auth', 'verified']);
 
 Route::resource('comments', CommentController::class)
-    ->only(['create', 'store', 'edit', 'update', 'destroy'])
+    ->only(['store', 'update', 'destroy'])
     ->middleware(['auth', 'verified']);
 
 Route::middleware('auth')->group(function () {
