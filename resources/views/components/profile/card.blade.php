@@ -1,4 +1,4 @@
-<div {{$attributes->merge(['class'=>'grid grid-cols-2 gap-4 border rounded-lg p-2']) }}>
+<div {{$attributes->merge(['class'=>'grid grid-cols-2 gap-4 border shadow-lg rounded-lg p-2']) }}>
     <!-- First Row -->
     <div class="flex">
         <a href="{{ route('profile.show', ['username' => $user->username]) }}">
