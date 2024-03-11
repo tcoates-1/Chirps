@@ -9,6 +9,6 @@
     </div>        
 
     <div>
-        <x-chirp-list :chirps="$chirps" class="border-blue-600" />
+        <x-chirp-list :chirps="$chirps" />
     </div>
 </x-app-layout>

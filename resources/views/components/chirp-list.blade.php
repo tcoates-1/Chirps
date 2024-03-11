@@ -1,6 +1,6 @@
-<div {{$attributes->merge(['class'=>"mt-6 bg-white shadow-sm rounded-lg divide-y border"]) }}>
+<div {{$attributes->merge(['class'=>"mt-6 bg-white shadow-sm rounded-lg border rounded-lg"]) }}>
     @foreach ($chirps as $chirp)
-        <div class="p-6 flex space-x-2 border-blue-600">
+        <div class="p-6 flex mb-4 bg-white shadow-lg rounded-lg border border-blue-600">
             <a href="{{ route('profile.show', ['username' => $chirp->user->username]) }}">
                 <img src="{{ $chirp->user->profile_image }}" alt="Current Profile Picture" class="h-16 w-16 object-cover rounded-full mx-auto hover:scale-125" onerror="this.onerror=null; this.src='{{ asset('images/Lake.jpg') }}'; this.alt='image default';">     
             </a>

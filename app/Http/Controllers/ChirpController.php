@@ -106,7 +106,7 @@ class ChirpController extends Controller
         
         $days = $request->input('days', 14); // Default to 14 days 
         $startDate = Carbon::now()->subDays($days);
-        $chirps = Chirp::where('created_at', '>=', $startDate)->get();
+        $chirps = Chirp::where('created_at', '>=', $startDate)->latest()->get();
      
         return view('chirps.recent', ['chirps' => $chirps, 'days' => $days]);
      }

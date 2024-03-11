@@ -4,6 +4,6 @@
         <h1 class="text-blue-500 text-3xl underline">Look What Your Friends Are Chirping</h1>
     </div>
 	<div>
-        <x-chirp-list :chirps="$chirps" class="border-blue-500" />
+        <x-chirp-list :chirps="$chirps" />
     </div>
 </x-app-layout>
