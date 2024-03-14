@@ -6,12 +6,14 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class comment extends Model
+class Comment extends Model
 {
     use HasFactory;
 
     protected $fillable = [
-        'message',
+        'comment',
+        'user_id',
+        "chirp_id",
     ];
 
     public function user(): BelongsTo 

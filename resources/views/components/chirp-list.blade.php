@@ -2,7 +2,7 @@
     @foreach ($chirps as $chirp)
         <div class="p-6 flex mb-4 bg-white shadow-lg rounded-lg border border-blue-600">
             <a href="{{ route('profile.show', ['username' => $chirp->user->username]) }}">
-                <img src="{{ $chirp->user->profile_image }}" alt="Current Profile Picture" class="h-16 w-16 object-cover rounded-full mx-auto hover:scale-125" onerror="this.onerror=null; this.src='{{ asset('images/Lake.jpg') }}'; this.alt='image default';">     
+            <img src="{{ $chirp->user->profile_image }}" alt="Current Profile Picture" class="h-16 w-16 object-cover rounded-full mx-auto hover:scale-125" onerror="this.onerror=null; this.src='{{ asset('images/Lake.jpg') }}'; this.alt='image default';">
             </a>
                 <div class="flex-1">
                     <div class="flex justify-between items-center">
@@ -42,13 +42,13 @@
                 <p class="mt-4 text-lg text-gray-900">{{ $chirp->message }}</p>
                 <!-- Display existing comments for the chirp -->
                 @foreach ($chirp->comments as $comment)
-                    <div class="mt-4">
-                        {{ $comment->message }}
+                    <div class="items-center mt-4 max-w-prose flex border border-blue-500 justify-between rounded">
+                        {{ $comment->comment }}
                         @if(auth()->user() && auth()->user()->id === $comment->user_id)
                             <form method="POST" action="{{ route('comments.destroy', $comment) }}">
                                 @csrf
                                 @method('delete')
-                                <button type="submit" class="bg-red-500 text-white py-1 px-2 rounded mt-2">Delete Comment</button>
+                                <button type="submit" class="bg-red-500 text-white py-1 px-2 m-1 rounded">Delete</button>
                             </form>
                         @endif 
                     </div>
@@ -56,7 +56,7 @@
                 <form method="POST" action="{{ route('comments.store') }}" class="mt-4 lg:flex lg:items-center">
                     @csrf
                     <input type="hidden" name="chirp_id" value="{{ $chirp->id }}">
-                    <textarea name="comment" class="w-full lg:w-1/4 p-1 border rounded" placeholder="Add a comment"></textarea>
+                    <textarea name="comment" maxlength="255" class="w-full lg:w-1/4 p-1 border border-blue-500 rounded" placeholder="Add a comment"></textarea>
                     <button type="submit" class="mt-2 bg-blue-500 text-white py-2 px-4 rounded ml-2">Comment</button>
                 </form>
     
