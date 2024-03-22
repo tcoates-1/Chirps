@@ -30,10 +30,7 @@ Route::resource('chirps', ChirpController::class)
 
 Route::post('/comments/{comment}', [CommentController::class, 'destroy'])->middleware(['auth', 'verified'])->name('comments.destroy');
 Route::get('/comments/{chirp}', [CommentController::class, 'index'])->name('comments.index');
-
-Route::resource('comments', CommentController::class)
-    ->only(['store', 'update', 'destroy', 'index'])
-    ->middleware(['auth', 'verified']);
+Route::post('/comments', [CommentController::class, 'store'])->middleware(['auth', 'verified'])->name('comments.store');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -43,9 +40,6 @@ Route::middleware('auth')->group(function () {
     Route::get('/chirpers',[ProfileController::class, 'index'])->name('chirpers.index');
     Route::get('/profile/{username}', [ProfileController::class, 'show'])->name('profile.show');
 });
-
-
-// Route::get('/comments/{chirp}', [CommentController::class, 'index'])->middleware(['auth', 'verified'])->name('comments.index');
 
 
 

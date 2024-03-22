@@ -27,7 +27,6 @@ class CommentController extends Controller
         
         return response()->json(['comment' => $comment]);
         
-        // return response()->json(['success' => true, 'message' => 'Comment posted successfully']); 
     }
 
     public function update()
@@ -35,9 +34,8 @@ class CommentController extends Controller
         //
     }
 
-    public function destroy(Request $request, Comment $comment)
+    public function destroy(Comment $comment)
     {   
-        // return response()->json(['success' => true, 'message' => 'Comment deleted successfully']); 
 
         if (auth()->user() && auth()->user()->id === $comment->user_id) {
 

@@ -48,7 +48,7 @@
                             @csrf
                             <input type="hidden" name="comment_id" value="{{ $comment->id }}">
                             <input type="hidden" id="user_id" name="user_id" value="{{ Auth::user() }}">
-                            <button type="submit" class="deleteButton bg-red-500 text-white py-1 px-2 m-1 rounded hover:bg-red-800">Delete</button>
+                            <button type="submit" class="bg-red-500 text-white py-1 px-2 m-1 rounded hover:bg-red-800">Delete</button>
                         </form>
                     @endif 
                 </div>
@@ -64,22 +64,23 @@
 </div>
 
 <script>
-    function deleteComments(){
-        let forms = document.querySelectorAll("form.delete-comment");
-        forms.forEach(deleteButtonForm => {
-            deleteButtonForm.addEventListener("submit", async (event) => {
+    function addDeleteButtonEventListener(element){
+        element.addEventListener("submit", async (event) => {
                 event.preventDefault();
-                const url = deleteButtonForm.action
-                const formData = new FormData(deleteButtonForm)
+                const url = element.action
+                const formData = new FormData(element)
 
-                console.log(url)
                 let response = await fetch(url, {
                     method: "POST",
                     body: formData
                 });
-                console.log(await response.json());
-                deleteButtonForm.parentElement.remove();
+                element.parentElement.remove();
             })
+    }
+    function deleteComments(){
+        let forms = document.querySelectorAll("form.delete-comment");
+        forms.forEach(deleteButtonForm => {
+            addDeleteButtonEventListener(deleteButtonForm);
         })
     }
     function renderComments(){
@@ -89,7 +90,6 @@
                 event.preventDefault();
                 let url = commentButtonForm.action;
                 const formData = new FormData(commentButtonForm);
-                console.log(url);
 
                 let response = await fetch(url, {
                     method: "POST",
@@ -99,45 +99,26 @@
                     return response.json();
                 })
                 .then((data) => {
-                    let newest = document.querySelector(".comment")
-                    if (!newest) {
-                        newest = document.createElement("div")
-                        newest.classList.add("comment")
-                    }
-                    let clone = newest.cloneNode(true)
-                    clone.innerHTML = data.comment.comment;
-                    clone.setAttribute("id", data.comment.id)
-                    console.log(clone);
-                    let newButtonForm = document.querySelector(".delete-comment")
-                    if (!newButtonForm) {
-                        newButtonForm = document.createElement("form")
-                        newButtonForm.setAttribute("method", "post")
-                        newButtonForm.classList.add("deleteButton")
-                        newButtonForm.innerHTML = `
-                            <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                            <input type="hidden" name="_method" value="DELETE">
-                            <input type="hidden" name="comment_id" value="${data.comment.id}">
-                            <button type="submit" class="bg-red-500 text-white py-1 px-2 m-1 rounded hover:bg-red-800">Delete</button>
-                        `;
-                    }
-                    let newDeleteButton = newButtonForm.cloneNode(true)
-                    clone.appendChild(newDeleteButton);
-                    document.getElementById(commentButtonForm.chirp_id.value).appendChild(clone);
+                    let newest = document.createElement("div")
+                    newest.id = data.comment.id;
+                    newest.classList.add("comment", "mt-4", "pl-1", "max-w-prose", "flex", "items-center", "border", "border-blue-500", "justify-between", "rounded")
+                    newest.innerHTML = data.comment.comment;
+                    let newButtonForm = document.createElement("form")
+                    newButtonForm.classList.add("delete-comment")
+                    newButtonForm.setAttribute("action", "/comments/" + data.comment.id)
+                    newButtonForm.innerHTML = `
+                        <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                        <input type="hidden" name="comment_id" value="${data.comment.id}">
+                        <button type="submit" class="bg-red-500 text-white py-1 px-2 m-1 rounded hover:bg-red-800">Delete</button>
+                    `;
+                    newest.appendChild(newButtonForm);
+                    document.getElementById(commentButtonForm.chirp_id.value).appendChild(newest);
                     commentButtonForm.reset();
-                    newDeleteButton.addEventListener("click", async (event) => {
-                        event.preventDefault();
-                        const url = '/comments/' + clone.id;
-                        console.log(url)
-                        const formData = new FormData(newDeleteButton)
-                        let response = await fetch(url, {
-                            method: "POST",
-                            body: formData
-                        });
-                        newDeleteButton.parentElement.remove();
-                        }) 
-                    })
+                    addDeleteButtonEventListener(newButtonForm);
+                })
             })
         })
     }
+    
 
 </script>
