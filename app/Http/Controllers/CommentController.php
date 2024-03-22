@@ -11,24 +11,23 @@ class CommentController extends Controller
 {
     public function store(Request $request)
     {
+        
         $request->validate([
             'chirp_id' => 'required|exists:chirps,id',
-            'comment' => 'required|string',
-        
+            'comment' => 'required|string', 
         ]);
-    
+        
+        
         $comment = Comment::create([
             'chirp_id' => $request->chirp_id,
             'comment' => $request->comment,
             'user_id' => auth()->id(), 
         ]);
-    
-        if (request()->wantsJson()){
-            return response()->json(['comment' => $comment]);
-        } else {
-            return redirect()->back()->with('success', 'Comment successfully added');
-        }
-            
+        
+        
+        return response()->json(['comment' => $comment]);
+        
+        // return response()->json(['success' => true, 'message' => 'Comment posted successfully']); 
     }
 
     public function update()
@@ -36,28 +35,24 @@ class CommentController extends Controller
         //
     }
 
-    public function destroy(Comment $comment)
-    {
+    public function destroy(Request $request, Comment $comment)
+    {   
+        // return response()->json(['success' => true, 'message' => 'Comment deleted successfully']); 
+
         if (auth()->user() && auth()->user()->id === $comment->user_id) {
-            
+
             $comment->delete();
     
-            if (request()->wantsJson()) {
-                return response()->json(['success' => true, 'message' => 'Comment deleted successfully']);
-            } else {
-                return redirect()->back()->with('success', 'Comment deleted successfully');
-            } 
+            return response()->json(['success' => true, 'message' => 'Comment deleted successfully']); 
         } else {
             // User is not authorized to delete this comment
-            if (request()->wantsJson()) {
-                return response()->json(['error' => 'Unauthorized to delete this comment'], 403);
-            } else {
-                return redirect()->back()->with('error', 'Unauthorized to delete this comment');
-        } 
-    }}
+            return response()->json(['error' => 'Unauthorized to delete this comment'], 403);
+            }  
+    }
 
     public function index(Chirp $chirp)
     {
-        return $chirp->comments;
+        $comments = $chirp->comments()->get();
+        return $comments;
     }
 }
