@@ -9,6 +9,6 @@
     </div>        
 
     <div>
-        <x-chirps.list :chirps="$chirps" />
+        <x-chirps.chirp-list :chirps="$chirps" /> 
     </div>
 </x-app-layout>
