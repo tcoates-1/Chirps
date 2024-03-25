@@ -6,14 +6,16 @@ use Closure;
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
 
-class List extends Component
+// rename to ChirpList
+class ChirpList extends Component
 {
+    public $chirps;
     /**
      * Create a new component instance.
      */
-    public function __construct()
+    public function __construct($chirps)
     {
-        //
+        $this->chirps = $chirps;
     }
 
     /**
@@ -21,6 +23,6 @@ class List extends Component
      */
     public function render(): View|Closure|string
     {
-        return view('components.chirps.list');
+        return view('components.chirps.chirp-list');
     }
 }

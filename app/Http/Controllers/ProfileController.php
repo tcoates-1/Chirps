@@ -88,7 +88,7 @@ class ProfileController extends Controller
         // Fetch chirps for the user
         $chirps = $user->chirps()->latest()->get();
 
-        return view('profile.profile', compact('user', 'chirps',));
+        return view('profile.profile', compact('user', 'chirps'));
     }
 }
 
