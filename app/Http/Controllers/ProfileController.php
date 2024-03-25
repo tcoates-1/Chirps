@@ -90,6 +90,16 @@ class ProfileController extends Controller
 
         return view('profile.profile', compact('user', 'chirps'));
     }
+
+    public function follow(Request $request) 
+    {
+        //
+    }
+
+    public function unfollow(Request $request)
+    {
+        //
+    }
 }
 
 
