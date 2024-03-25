@@ -39,6 +39,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/chirps/recent', [ChirpController::class, 'recent'])->name('recent');
     Route::get('/chirpers',[ProfileController::class, 'index'])->name('chirpers.index');
     Route::get('/profile/{username}', [ProfileController::class, 'show'])->name('profile.show');
+    Route::post('profile/{user_id}', [ProfileController::class, 'follow'])->name('profile.follow');
+    Route::post('profile/{user_id}', [ProfileController::class, 'unfollow'])->name('profile.unfollow');
 });
 
 
