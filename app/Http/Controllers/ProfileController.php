@@ -95,6 +95,10 @@ class ProfileController extends Controller
     {
         $user_id = $request->userToFollow;
         $user = $request->user();
+
+        if($user->id == $user_id){
+            return back()->with(['message' => 'You cannot follow yourself!', 'user_id' => $user->id]);
+        }
         
         if($user->follows()->where('user_id', $user_id)->exists()){
             return back()->with(['message' => 'You are already following this user!', 'user_id' => $user_id]);
