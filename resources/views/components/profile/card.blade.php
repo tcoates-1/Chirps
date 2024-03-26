@@ -18,6 +18,27 @@
                 {{ $user->name }}
             </a>
         </h1>
+        <div class="flex justify-end">
+            <form method="POST" action="{{ route('profile.follow', $user->id) }}" class="text-right">
+                @csrf
+                <input type="hidden" name="userToFollow" value="{{ $user->id }}">
+                <input type="hidden" name="userFollowing" value="{{ Auth::user() }}">
+                <button type="submit" class="bg-blue-500 text-white py-1 px-2 m-1 rounded hover:bg-blue-800">Follow</button>
+            </form>
+            <form method="POST" action="{{ route('profile.unfollow', $user->id) }}" class="text-right">
+                @csrf
+                <input type="hidden" name="userToUnfollow" value="{{ $user->id }}">
+                <input type="hidden" name="userUnfollowing" value="{{ Auth::user() }}">
+                <button type="submit" class="bg-blue-500 text-white py-1 px-2 ml-1 mt-1 mb-1 mr-0 rounded hover:bg-blue-800">Unfollow</button>
+            </form>
+        </div>
+        <div class="flex justify-end">
+        @if(session('message') && session('user_id') == $user->id)
+            <div class="flex bg-green-100 border border-green-400 text-green-700 px-1 py-1 rounded w-3/5 justify-center">
+                <div>{{ session('message') }}</div>
+            </div>
+        @endif
+        </div>
     </div>
 
     <!-- Second Row (Total Chirps and Chirperversary) -->
@@ -31,3 +52,4 @@
         Chirperversary: {{ $user->created_at->format('M d, Y') }}
     </div>
 </div>
+
