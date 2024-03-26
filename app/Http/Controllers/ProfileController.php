@@ -122,6 +122,23 @@ class ProfileController extends Controller
             return back()->with(['message' => 'You are not following this user!', 'user_id' => $user_id]);
         }
     }
+
+    public function dashboard(Request $request)
+    {
+        $user = $request->user();
+        $allChirps = collect();
+        foreach($user->chirps as $chirps){
+            $allChirps->push($chirps);
+        }
+        foreach($user->follows as $followedUser){
+            foreach($followedUser->chirps as $chirp){
+                $allChirps->push($chirp);
+            }
+        }
+        $sortedChirps = $allChirps->sortByDesc('created_at');
+
+        return view('dashboard', ['user' => $user, 'sortedChirps' => $sortedChirps]);
+    }
 }
 
 

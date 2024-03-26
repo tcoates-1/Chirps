@@ -20,11 +20,8 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/dashboard', function () {
-    $user = auth()->user();
-    $chirps = $user->chirps;
-    return view('dashboard', ['user' => $user, 'chirps' => $chirps]);
-})->middleware(['auth', 'verified'])->name('dashboard');
+Route::get('/dashboard', [ProfileController::class, 'dashboard'])
+    ->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::resource('chirps', ChirpController::class)
 	->only(['index', 'store', 'edit', 'update', 'destroy'])
