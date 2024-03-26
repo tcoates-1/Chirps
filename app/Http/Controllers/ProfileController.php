@@ -95,6 +95,10 @@ class ProfileController extends Controller
     {
         $user_id = $request->userToFollow;
         $user = $request->user();
+
+        if($user->id == $user_id){
+            return back()->with(['message' => 'You cannot follow yourself!', 'user_id' => $user->id]);
+        }
         
         if($user->follows()->where('user_id', $user_id)->exists()){
             return back()->with(['message' => 'You are already following this user!', 'user_id' => $user_id]);
@@ -117,6 +121,23 @@ class ProfileController extends Controller
         else {
             return back()->with(['message' => 'You are not following this user!', 'user_id' => $user_id]);
         }
+    }
+
+    public function dashboard(Request $request)
+    {
+        $user = $request->user();
+        $allChirps = collect();
+        foreach($user->chirps as $chirps){
+            $allChirps->push($chirps);
+        }
+        foreach($user->follows as $followedUser){
+            foreach($followedUser->chirps as $chirp){
+                $allChirps->push($chirp);
+            }
+        }
+        $sortedChirps = $allChirps->sortByDesc('created_at');
+
+        return view('dashboard', ['user' => $user, 'sortedChirps' => $sortedChirps]);
     }
 }
 
