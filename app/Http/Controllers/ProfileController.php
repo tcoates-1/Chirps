@@ -82,7 +82,7 @@ class ProfileController extends Controller
         $user = User::withCount('chirps')->where('username', $username)->first();
 
         if (!$user) {
-            abort(404); // User not found
+            abort(404); 
         }
 
         // Fetch chirps for the user
@@ -93,12 +93,30 @@ class ProfileController extends Controller
 
     public function follow(Request $request) 
     {
-        //
+        $user_id = $request->userToFollow;
+        $user = $request->user();
+        
+        if($user->follows()->where('user_id', $user_id)->exists()){
+            return back()->with(['message' => 'You are already following this user!', 'user_id' => $user_id]);
+        }
+        
+        $user->follows()->attach($user_id);
+        
+        return back()->with(['message' => 'You are now following!', 'user_id' => $user_id]);
     }
 
     public function unfollow(Request $request)
     {
-        //
+        $user_id = $request->userToUnfollow;
+        $user = $request->user();
+
+        if ($user->follows()->where('user_id', $user_id)->exists()){
+            $user->follows()->detach($user_id);
+            return back()->with(['message' => 'You have successfully unfollowed!', 'user_id' => $user_id]);
+        }
+        else {
+            return back()->with(['message' => 'You are not following this user!', 'user_id' => $user_id]);
+        }
     }
 }
 
