@@ -6,7 +6,7 @@
                 <!-- Logo -->
                 <div class="flex items-center">
                     <a href="{{ route('dashboard') }}">
-                        <x-application-logo class="block h-9 w-auto fill-current text-blue-600" />
+                        <img src="{{ asset('images/Twitter.webp') }}" alt="logo" class="h-10 w-10 object-contain rounded-md mx-auto hover:scale-125"/>
                     </a>
                 </div>
 
