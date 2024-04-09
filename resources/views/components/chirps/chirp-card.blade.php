@@ -66,7 +66,7 @@
                             <input type="hidden" name="chirp_id" value="{{ $chirp->id }}">
                             <input type="hidden" name="parent_id" value="{{ $parentComment->id }}">
                             <textarea name="comment" maxlength="255" class="w-full xl:w-1/4 p-1 border border-blue-500 rounded" placeholder="Reply..." required></textarea>
-                            <button type="submit" class="mt-2 bg-white border border-blue-500 text-blue-500 font-bold py-2 px-4 rounded ml-2 hover:bg-gray-300">Reply</button>
+                            <button type="submit" class="mt-2 bg-white border border-blue-500 text-blue-500 font-bold py-2 px-4 rounded ml-2 hover:bg-blue-500 hover:text-white">Reply</button>
                         </form>
                         @php
                             $renderedCommentIds[] = $parentComment->id;
@@ -201,7 +201,7 @@
                         <input type="hidden" name="parent_id" value="${data.comment.id}">
                         <input type="hidden" name="chirp_id" value="${data.comment.chirp_id}">
                         <textarea name="comment" maxlength="255" class="w-full xl:w-1/4 p-1 border border-blue-500 rounded" placeholder="Reply..." required></textarea>
-                        <button type="submit" class="mt-2 bg-white border border-blue-500 text-blue-500 font-bold py-2 px-4 rounded ml-2 hover:bg-gray-300">Reply</button>
+                        <button type="submit" class="mt-2 bg-white border border-blue-500 text-blue-500 font-bold py-2 px-4 rounded ml-2 hover:bg-blue-500 hover:text-white">Reply</button>
                     `;
                     newReplyForm.style.display = 'none'
                     let button = document.createElement("input")
