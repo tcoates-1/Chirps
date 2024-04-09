@@ -39,42 +39,73 @@
         </div>        
         <p class="mt-4 ml-2 p-1 px-3 bg-white text-2xl text-gray-900 rounded-lg inline-block">{{ $chirp->message }}</p>
         <!-- Display existing comments for the chirp -->
+        @php
+            $renderedCommentIds = [];
+        @endphp
+        
         <div id="{{ $chirp->id }}">
-            @foreach ($chirp->comments as $comment)
-                <div id="{{ $comment->id }}" class="comment text-lg bg-white mt-4 ml-5 p-1 items-center border border-blue-500 rounded-lg max-w-screen-sm" @if ($comment->parent_id != null) class="ml-40" @endif>
-                    
-                @endif>
-                    <div class="flex items-center justify-between">
-                        <div class="flex items-center">
-                            <div>
-                            <a href="{{ route('profile.show', ['username' => $comment->user->username]) }}">
-                                <img src="{{ $comment->user->profile_image }}" alt="Current Profile Picture" class="h-16 w-16 object-cover rounded-full mx-auto hover:scale-125" onerror="this.onerror=null; this.src='{{ asset('images/Lake.jpg') }}'; this.alt='image default';">
-                            </a> 
-                            <a href="{{ route('profile.show', ['username' => $comment->user->username]) }}">
-                                <span class="ml-2 text-blue-500 hover:font-bold">{{ $comment->user->username }}</span>
-                            </a> 
+            @foreach ($chirp->parentComments as $parentComment)
+                @if (!in_array($parentComment->id, $renderedCommentIds))
+                    <div id="{{ $parentComment->id }}" class="comment text-lg bg-white mt-4 ml-5 p-1 items-center border border-blue-500 rounded-lg max-w-screen-sm">
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center">
+                                <span>{{ $parentComment->comment }}</span>
                             </div>
-                            &nbsp;<span>{{ $comment->comment }}</span>
+                            @if(auth()->user() && auth()->user()->id === $parentComment->user_id)
+                                <form method="POST" action="{{ route('comments.destroy', $parentComment) }}" data-id="{{ $parentComment->id }}"class="delete-comment flex items-center">
+                                    @csrf
+                                    <input type="hidden" name="comment_id" value="{{ $parentComment->id }}">
+                                    <input type="hidden" id="user_id" name="user_id" value="{{ Auth::user() }}">
+                                    <button type="submit" class="bg-red-500 text-white py-1 px-2 m-1 rounded hover:bg-red-800">Delete</button>
+                                </form>
+                            @endif
                         </div>
-                        @if(auth()->user() && auth()->user()->id === $comment->user_id)
-                            <form method="POST" action="{{ route('comments.destroy', $comment) }}" data-id="{{ $comment->id }}"class="delete-comment flex items-center">
-                                @csrf
-                                <input type="hidden" name="comment_id" value="{{ $comment->id }}">
-                                <input type="hidden" id="user_id" name="user_id" value="{{ Auth::user() }}">
-                                <button type="submit" class="bg-red-500 text-white py-1 px-2 m-1 rounded hover:bg-red-800">Delete</button>
-                            </form>
+                        <input type="button" class="text-blue-500 hover:font-bold hover:cursor-pointer" id="replyButton" value="Reply" onclick="showForm(this)">
+                        <form method="POST" action="{{ route('comments.store') }}" class="post-reply mt-4 lg:flex lg:items-center hidden" name="commentForm" style="display:none">
+                            @csrf
+                            <input type="hidden" name="chirp_id" value="{{ $chirp->id }}">
+                            <input type="hidden" name="parent_id" value="{{ $parentComment->id }}">
+                            <textarea name="comment" maxlength="255" class="w-full xl:w-1/4 p-1 border border-blue-500 rounded" placeholder="Reply..." required></textarea>
+                            <button type="submit" class="mt-2 bg-white border border-blue-500 text-blue-500 font-bold py-2 px-4 rounded ml-2 hover:bg-gray-300">Reply</button>
+                        </form>
+                        @php
+                            $renderedCommentIds[] = $parentComment->id;
+                        @endphp
+                        @if($parentComment->childComments->count() > 0)
+                            @foreach ($parentComment->childComments as $childComment)
+                                @if (!in_array($childComment->id, $renderedCommentIds))
+                                    <div id="{{ $childComment->id }}" class="comment text-lg bg-white mt-4 ml-5 p-1 items-center border border-blue-500 rounded-lg max-w-screen-sm">
+                                        <div class="flex items-center justify-between">
+                                            <div class="flex items-center">
+                                                <span>{{ $childComment->comment }}</span>
+                                            </div>
+                                        @if(auth()->user() && auth()->user()->id === $childComment->user_id)
+                                            <form method="POST" action="{{ route('comments.destroy', $childComment) }}" data-id="{{ $childComment->id }}"class="delete-comment flex items-center">
+                                                @csrf
+                                                <input type="hidden" name="comment_id" value="{{ $childComment->id }}">
+                                                <input type="hidden" id="user_id" name="user_id" value="{{ Auth::user() }}">
+                                                <button type="submit" class="bg-red-500 text-white py-1 px-2 m-1 rounded hover:bg-red-800">Delete</button>
+                                            </form>
+                                        @endif
+                                        </div>
+                                    </div>
+                                @php
+                                    $renderedCommentIds[] = $childComment->id;
+                                @endphp
+                                @endif
+                            @endforeach
                         @endif
                     </div>
-                </div>
+                @endif
             @endforeach
         </div>
         <form method="POST" action="{{ route('comments.store') }}" class="post-comment mt-4 lg:flex lg:items-center" name="commentForm">
             @csrf
             <input type="hidden" name="chirp_id" value="{{ $chirp->id }}">
-            <textarea name="comment" maxlength="255" class="w-full xl:w-1/4 p-1 border border-blue-500 rounded" placeholder="Add a comment" required></textarea>
+            <textarea name="comment" maxlength="255" class="w-full xl:w-1/4 p-1 border border-blue-500 rounded" placeholder="Add a comment..." required></textarea>
             <button type="submit" class="mt-2 bg-white border border-blue-500 text-blue-500 font-bold py-2 px-4 rounded ml-2 hover:bg-gray-300">Comment</button>
-        </form>     
-    </div>
+        </form> 
+    </div>    
 </div>
 
 <script>
@@ -88,13 +119,49 @@
                     method: "POST",
                     body: formData
                 });
-                element.parentElement.remove();
+                element.parentElement.parentElement.remove();
             })
     }
     function deleteComments(){
         let forms = document.querySelectorAll("form.delete-comment");
         forms.forEach(deleteButtonForm => {
             addDeleteButtonEventListener(deleteButtonForm);
+        })
+    }
+    function addReplyButtonEventListener(element) {
+        element.addEventListener("submit", async (event) => {
+            event.preventDefault();
+                let url = element.action;
+                const formData = new FormData(element);
+
+                let response = await fetch(url, {
+                    method: "POST",
+                    body: formData,
+                })
+                .then(response => {
+                    return response.json();
+                })
+                .then((data) => {
+                    let newest = document.createElement("div")
+                    newest.classList.add("flex", "items-center", "justify-between")
+                    newest.innerHTML = data.comment.comment;
+                    let newButtonForm = document.createElement("form")
+                    newButtonForm.classList.add("delete-comment")
+                    newButtonForm.setAttribute("action", "/comments/" + data.comment.id)
+                    newButtonForm.innerHTML = `
+                        <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                        <input type="hidden" name="comment_id" value="${data.comment.id}">
+                        <button type="submit" class="bg-red-500 text-white py-1 px-2 m-1 rounded hover:bg-red-800">Delete</button>
+                    `;
+                    newest.appendChild(newButtonForm);
+                    let newComment = document.createElement("div")
+                    newComment.id = data.comment.id
+                    newComment.classList.add("comment", "text-lg", "bg-white", "mt-4", "ml-5", "p-1", "items-center", "border", "border-blue-500", "rounded-lg", "max-w-screen-sm")
+                    newComment.appendChild(newest)
+                    document.getElementById(element.parent_id.value).appendChild(newComment);
+                    element.reset();
+                    addDeleteButtonEventListener(newButtonForm);
+                })
         })
     }
     function renderComments(){
@@ -114,8 +181,7 @@
                 })
                 .then((data) => {
                     let newest = document.createElement("div")
-                    newest.id = data.comment.id;
-                    newest.classList.add("comment", "mt-4", "pl-1", "max-w-prose", "flex", "items-center", "border", "border-blue-500", "justify-between", "rounded-lg", "bg-white")
+                    newest.classList.add("flex", "items-center", "justify-between")
                     newest.innerHTML = data.comment.comment;
                     let newButtonForm = document.createElement("form")
                     newButtonForm.classList.add("delete-comment")
@@ -126,13 +192,46 @@
                         <button type="submit" class="bg-red-500 text-white py-1 px-2 m-1 rounded hover:bg-red-800">Delete</button>
                     `;
                     newest.appendChild(newButtonForm);
-                    document.getElementById(commentButtonForm.chirp_id.value).appendChild(newest);
+                    let newReplyForm = document.createElement("form")
+                    newReplyForm.classList.add("post-reply", "mt-4", "lg:flex", "lg:items-center")
+                    newReplyForm.setAttribute("method", "POST")
+                    newReplyForm.setAttribute("action", "/comments")
+                    newReplyForm.innerHTML = `
+                        <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                        <input type="hidden" name="parent_id" value="${data.comment.id}">
+                        <input type="hidden" name="chirp_id" value="${data.comment.chirp_id}">
+                        <textarea name="comment" maxlength="255" class="w-full xl:w-1/4 p-1 border border-blue-500 rounded" placeholder="Reply..." required></textarea>
+                        <button type="submit" class="mt-2 bg-white border border-blue-500 text-blue-500 font-bold py-2 px-4 rounded ml-2 hover:bg-gray-300">Reply</button>
+                    `;
+                    newReplyForm.style.display = 'none'
+                    let button = document.createElement("input")
+                    button.type = "button"
+                    button.classList.add("text-blue-500", "hover:font-bold", "hover:cursor-pointer")
+                    button.value = "Reply"
+                    button.addEventListener("click", function(){showForm(this);})
+                    let newComment = document.createElement("div")
+                    newComment.id = data.comment.id
+                    newComment.classList.add("comment", "text-lg", "bg-white", "mt-4", "ml-5", "p-1", "items-center", "border", "border-blue-500", "rounded-lg", "max-w-screen-sm")
+                    newComment.appendChild(newest)
+                    newComment.appendChild(button)
+                    newComment.appendChild(newReplyForm)
+                    document.getElementById(commentButtonForm.chirp_id.value).appendChild(newComment);
                     commentButtonForm.reset();
                     addDeleteButtonEventListener(newButtonForm);
+                    addReplyButtonEventListener(newReplyForm)
                 })
             })
         })
     }
-    
+    function renderReplies(){
+        let forms = document.querySelectorAll("form.post-reply");
+        forms.forEach(replyButtonForm => {
+            addReplyButtonEventListener(replyButtonForm);
+        })
+    }
+    function showForm(button){
+        let form = button.nextElementSibling;
+        form.style.display = 'flex';
+    }
 
 </script>
