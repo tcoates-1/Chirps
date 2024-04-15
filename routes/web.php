@@ -28,10 +28,12 @@ Route::resource('chirps', ChirpController::class)
 	->only(['index', 'store', 'edit', 'update', 'destroy'])
 	->middleware(['auth', 'verified']);
 
+// comment routes
 Route::post('/comments/{comment}', [CommentController::class, 'destroy'])->middleware(['auth', 'verified'])->name('comments.destroy');
 Route::get('/comments/{chirp}', [CommentController::class, 'index'])->name('comments.index');
 Route::post('/comments', [CommentController::class, 'store'])->middleware(['auth', 'verified'])->name('comments.store');
 
+// auth user routes
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
@@ -43,6 +45,7 @@ Route::middleware('auth')->group(function () {
     Route::post('profile/{user_id}/unfollow', [ProfileController::class, 'unfollow'])->name('profile.unfollow');
 });
 
+// notification routes
 Route::post('/mark-notifications-as-read', [NotificationController::class, 'markAsRead'])->name('mark-notifications-as-read');
 Route::get('/notifications', [NotificationController::class, 'index'])->name('notification.index');
 

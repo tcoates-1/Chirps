@@ -34,7 +34,7 @@
         </div>
         <div class="flex justify-end">
         @if(session('message') && session('user_id') == $user->id)
-            <div class="flex bg-green-100 border border-green-400 text-green-700 px-1 py-1 rounded inline-block justify-center">
+            <div class="inline-flex bg-green-100 border border-green-400 text-green-700 px-1 py-1 rounded inline-block justify-center">
                 <div>{{ session('message') }}</div>
             </div>
         @endif
