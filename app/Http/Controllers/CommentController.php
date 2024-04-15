@@ -6,6 +6,8 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use App\Models\Comment;
 use App\Models\Chirp;
+use App\Notifications\NewComment;
+use App\Notifications\NewReply;
 
 class CommentController extends Controller
 {
@@ -28,7 +30,15 @@ class CommentController extends Controller
         }
 
         $comment = Comment::create($commentData);
-        
+
+        // notify chirp owner that someone commented based on comment or reply
+        if ($request->has('parent_id')) {
+            $reply = Comment::find($request->parent_id);
+            $reply->user->notify(new NewReply($comment));
+        } else {
+            $chirp = Chirp::find($request->chirp_id);
+            $chirp->user->notify(new NewComment($comment));
+        }
         
         return response()->json(['comment' => $comment]);
         
