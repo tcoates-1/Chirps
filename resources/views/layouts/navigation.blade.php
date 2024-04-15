@@ -1,4 +1,4 @@
-<nav x-data="{ open: false }" class="bg-white border-b border-gray-100">
+<nav x-data="{ open: false }" class="bg-white border-b border-gray-100 sticky top-0 z-50 shadow-sm">
     <!-- Primary Navigation Menu -->
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex justify-between h-16">
@@ -41,7 +41,7 @@
                         @if (Auth::user()->unreadNotifications->count() > 0)
                             {{ Auth::user()->unreadnotifications->count() }}
                         @endif</span>
-                    <div class="absolute w-max top-full right-0 mt-2 w-48 bg-white border border-gray-300 rounded-lg shadow-lg hidden z-50" id="notificationList">
+                    <div class="absolute w-max top-full right-0 mt-2 w-48 bg-white border border-gray-300 rounded-lg shadow-lg hidden z-40" id="notificationList">
                         @foreach (Auth::user()->unreadNotifications as $notification)
                             @if ($notification->type == 'App\Notifications\NewFollower')
                                 <a href="{{ route('profile.show', ['username' => $notification->data['follower_username']]) }}">

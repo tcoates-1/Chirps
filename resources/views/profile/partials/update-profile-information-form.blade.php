@@ -12,8 +12,13 @@
     <form id="send-verification" method="post" action="{{ route('verification.send') }}">
         @csrf
     </form>
+    @if(session('message'))
+        <div class="inline-flex bg-green-100 border border-green-400 text-green-700 px-1 py-1 rounded inline-block justify-center">
+            <div>{{ session('message') }}</div>
+        </div>
+    @endif
 
-    <form method="post" action="{{ route('profile.update') }}" class="mt-6 space-y-6">
+    <form method="post" enctype="multipart/form-data" action="{{ route('profile.update') }}" class="mt-6 space-y-6">
         @csrf
         @method('patch')
 
@@ -64,8 +69,12 @@
                 @endif 
             </header>
 
-            <x-input-label for="profile_image" :value="__('Enter the URL for your desired profile picture. Must be JPEG or PNG')" />
-            <x-text-input id="profile_image" name="profile_image" type="text" class="mt-1 block w-full rounded-md border-gray-300" value="{{ old('profile_image', auth()->user()->profile_image) }}" />
+            <div class="relative">
+                <x-input-label for="profile_image" :value="__('Upload Profile Picture')" />
+                <input id="profile_image" name="profile_image" type="file" accept="image/*" class="mt-1 block w-full absolute hidden">
+                <x-input-error class="mt-2" :messages="$errors->get('profile_image')" />
+                <label for="profile_image" class="inline-block p-2 bg-blue-500 text-white cursor-pointer md:w-1/5 rounded-md text-center hover:bg-blue-800 shadow-md shadow-blue-500/50">Choose File</label>
+            </div>
 
         </div>
 

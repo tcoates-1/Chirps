@@ -31,15 +31,23 @@ class ProfileController extends Controller
     {
         $user = $request->user();
     
-        $user->fill($request->validated());
+        $rules = [];
+
+        if ($request->hasFile('profile_image')) {
+            $rules['profile_image'] = 'nullable|image|max:2048';
+
+            $imagePath = $request->file('profile_image')->store('profile_pictures', 'public');
+            $user->profile_image = Storage::url($imagePath);
+        }
+        
+        if ($request->has('username') && $request->username !== $user->username) {
+            $rules['username'] = ['string', 'max:255', 'unique:users,username'];
+            $user->username = $request->username;
+        }
+
+        $request->validate($rules);
     
-        $request->validate([
-            'profile_image' => 'url|active_url',
-            'username' => ['required', 'string', 'max:255', 'unique:users,username,'],
-        ]);
-    
-        $user->profile_image = $request->input('profile_image');
-        $user->username = $request->username;
+        $user->fill($request->except('profile_image', 'username'));
     
         if ($user->isDirty('email')) {
             $user->email_verified_at = null;
@@ -47,7 +55,7 @@ class ProfileController extends Controller
     
         $user->save();
     
-        return redirect()->route('profile.edit')->with('status', 'profile-updated');
+        return back()->with(['message' => 'Profile Successfully Updated!', 'status', 'profile-updated']);
     }
 
     /**
