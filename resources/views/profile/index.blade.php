@@ -1,7 +1,7 @@
 <x-app-layout>
 	<div class="max-w-full mx-auto p-4 sm:p-6 lg:p-8">
         <div class="flex justify-self-center place-content-center">
-            <h1 class="text-blue-500 text-3xl underline">All Chirpers!</h1>
+            <h1 class="text-white text-3xl underline">All Chirpers!</h1>
         </div>
         
 	</div>

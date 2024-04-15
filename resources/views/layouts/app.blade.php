@@ -28,7 +28,7 @@
             @endif
 
             <!-- Page Content -->
-            <main>
+            <main class="bg-gradient-to-r from-blue-300 via-cyan-500 to-blue-800">
                 {{ $slot }}
             </main>
         </div>

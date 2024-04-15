@@ -22,9 +22,15 @@ class Chirp extends Model
 
     public function user(): BelongsTo
     {
-	return $this->belongsTo(User::class);
+	    return $this->belongsTo(User::class);
     }
+    
     public function comments(): HasMany
+    {
+        return $this->hasMany(Comment::class);
+    }
+    
+    public function parentComments(): HasMany
     {
         return $this->hasMany(Comment::class);
     }

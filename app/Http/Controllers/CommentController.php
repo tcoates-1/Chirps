@@ -17,12 +17,17 @@ class CommentController extends Controller
             'comment' => 'required|string', 
         ]);
         
-        
-        $comment = Comment::create([
+        $commentData = [
             'chirp_id' => $request->chirp_id,
             'comment' => $request->comment,
-            'user_id' => auth()->id(), 
-        ]);
+            'user_id' => auth()->id(),
+        ];
+
+        if ($request->has('parent_id')) {
+            $commentData['parent_id'] = $request->parent_id;
+        }
+
+        $comment = Comment::create($commentData);
         
         
         return response()->json(['comment' => $comment]);
@@ -39,6 +44,7 @@ class CommentController extends Controller
 
         if (auth()->user() && auth()->user()->id === $comment->user_id) {
 
+            $comment->childComments()->delete();
             $comment->delete();
     
             return response()->json(['success' => true, 'message' => 'Comment deleted successfully']); 

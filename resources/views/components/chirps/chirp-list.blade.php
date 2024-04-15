@@ -7,5 +7,6 @@
     document.addEventListener('DOMContentLoaded', function(){
         renderComments();
         deleteComments();
+        renderReplies();
     })
 </script>
