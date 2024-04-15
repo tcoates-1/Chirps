@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Redirect;
 use Illuminate\View\View;
 use Illuminate\Support\Facades\Storage;
 use App\Models\User;
+use App\Notifications\NewFollower;
 
 class ProfileController extends Controller
 {
@@ -105,6 +106,10 @@ class ProfileController extends Controller
         }
         
         $user->follows()->attach($user_id);
+        
+        // notify followed user that they have a new follower
+        $followedUser = User::find($user_id);
+        $followedUser->notify(new NewFollower($user));
         
         return back()->with(['message' => 'You are now following!', 'user_id' => $user_id]);
     }

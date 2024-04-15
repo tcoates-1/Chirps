@@ -27,11 +27,49 @@
                     <x-nav-link :href="route('chirpers.index')" :active="request()->routeIs('chirpers.index')">
 			            {{ __('Chirpers') }}
 		            </x-nav-link>
+                    <x-nav-link :href="route('notification.index')" :active="request()->routeIs('notification.index')">
+			            {{ __('Notifications') }}
+		            </x-nav-link>
                </div>
             </div>
 
             <!-- Settings Dropdown -->
             <div class="hidden sm:flex sm:items-center sm:ms-6">
+                <div class="relative hover:cursor-pointer" id="notificationDropdown">
+                    <img class="h-14 w-14 hover:scale-110" src="{{ url('images/notification-bell-icon.png') }}" alt="notification bell icon">
+                    <span id="notificationCount" class="absolute top-0 right-2 text-red-500 font-bold text-lg px-w py-1 rounded-full">
+                        @if (Auth::user()->unreadNotifications->count() > 0)
+                            {{ Auth::user()->unreadnotifications->count() }}
+                        @endif</span>
+                    <div class="absolute w-max top-full right-0 mt-2 w-48 bg-white border border-gray-300 rounded-lg shadow-lg hidden z-50" id="notificationList">
+                        @foreach (Auth::user()->unreadNotifications as $notification)
+                            @if ($notification->type == 'App\Notifications\NewFollower')
+                                <a href="{{ route('profile.show', ['username' => $notification->data['follower_username']]) }}">
+                                    <div class="p-2 hover:font-bold text-blue-500">
+                                        {{ $notification->data['follower_name'] }} followed you! 
+                                    </div>
+                                </a>
+                            @endif
+                            @if ($notification->type == 'App\Notifications\NewComment')
+                                <a href="{{ route('chirps.index') }}#{{ $notification->data['chirp_id'] }}">
+                                    <div class="p-2 hover:font-bold text-blue-500">
+                                        {{ $notification->data['commenter_name'] }} commented on your chirp!
+                                    </div>
+                                </a>
+                            @endif
+                            @if ($notification->type == 'App\Notifications\NewReply')
+                                <a href="{{ route('chirps.index') }}#{{ $notification->data['parent_id'] }}">
+                                    <div class="p-2 hover:font-bold text-blue-500">
+                                        {{ $notification->data['commenter_name'] }} replied to your comment!
+                                    </div>
+                                </a>
+                            @endif
+                        @endforeach
+                        <form id="markNotificationsAsReadForm" action="{{ route('mark-notifications-as-read') }}" method="POST" class="hidden">
+                            @csrf
+                        </form>
+                    </div>
+                </div>
                 <x-dropdown align="right" width="48">
                     <x-slot name="trigger">
                         <button class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-blue-300 bg-white hover:text-gray-700 focus:outline-none transition ease-in-out duration-150">
@@ -94,6 +132,9 @@
         <x-responsive-nav-link :href="route('chirpers.index')" :active="request()->routeIs('chirpers.index')">
             {{ __('Chirpers') }}
         </x-responsive-nav-link>
+        <x-responsive-nav-link :href="route('notification.index')" :active="request()->routeIs('notification.index')">
+            {{ __('Notifications') }}
+        </x-responsive-nav-link>
         </div>
 
         <!-- Responsive Settings Options -->
@@ -122,3 +163,39 @@
         </div>
     </div>
 </nav>
+<script>
+    function updateNotificationCount() {
+        const notiCount = document.getElementById('notificationCount');
+        if (notiCount) {
+            notiCount.classList.add('hidden')
+        }
+    }
+    
+    document.addEventListener('DOMContentLoaded', function() {
+        const notificationDropdown = document.getElementById('notificationDropdown');
+        const notificationList = document.getElementById('notificationList');
+        const markNotificationsAsReadForm = document.getElementById('markNotificationsAsReadForm');
+
+        notificationDropdown.addEventListener('click', event => {
+            notificationList.classList.toggle('hidden');
+            fetch(markNotificationsAsReadForm.action, {
+                method:"POST",
+                body: new FormData(markNotificationsAsReadForm)
+            })
+            .then(response => {
+                if (response.ok) {
+                    updateNotificationCount();
+                } else {
+                    console.log('error');
+                }
+            })
+        })
+
+        document.addEventListener('click', event => {
+            if (!notificationDropdown.contains(event.target)) {
+                notificationList.classList.add('hidden');
+            }
+        })
+    })
+    
+</script>

@@ -4,6 +4,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ChirpController;
 use App\Http\Controllers\CommentController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\NotificationController;
 
 /*
 |--------------------------------------------------------------------------
@@ -41,6 +42,9 @@ Route::middleware('auth')->group(function () {
     Route::post('profile/{user_id}/follow', [ProfileController::class, 'follow'])->name('profile.follow');
     Route::post('profile/{user_id}/unfollow', [ProfileController::class, 'unfollow'])->name('profile.unfollow');
 });
+
+Route::post('/mark-notifications-as-read', [NotificationController::class, 'markAsRead'])->name('mark-notifications-as-read');
+Route::get('/notifications', [NotificationController::class, 'index'])->name('notification.index');
 
 
 
