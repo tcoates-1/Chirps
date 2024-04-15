@@ -71,9 +71,9 @@
 
             <div class="relative">
                 <x-input-label for="profile_image" :value="__('Upload Profile Picture')" />
-                <input id="profile_image" name="profile_image" type="file" accept="image/*" class="mt-1 block w-full absolute hidden">
+                <input id="profile_image" name="profile_image" type="file" accept="image/*" class="mt-1 block w-full absolute hidden" onchange="updateFileName(this)">
                 <x-input-error class="mt-2" :messages="$errors->get('profile_image')" />
-                <label for="profile_image" class="inline-block p-2 bg-blue-500 text-white cursor-pointer md:w-1/5 rounded-md text-center hover:bg-blue-800 shadow-md shadow-blue-500/50">Choose File</label>
+                <label for="profile_image" id="fileInputLabel" class="inline-block p-2 bg-blue-500 text-white cursor-pointer w-auto rounded-md text-center hover:bg-blue-800 shadow-md shadow-blue-500/50">Choose File</label>
             </div>
 
         </div>
@@ -93,3 +93,10 @@
         </div>
     </form>
 </section>
+<script>
+    function updateFileName(input) {
+        const fileName = input.files[0].name
+        const label = document.getElementById('fileInputLabel');
+        label.textContent = fileName;
+    }
+</script>
